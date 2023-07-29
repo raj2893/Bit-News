@@ -80,6 +80,197 @@ import 'package:flutter_cupertino_datetime_picker/flutter_cupertino_datetime_pic
 //   }
 // }
 
+// class BoxList extends StatefulWidget {
+//   @override
+//   _BoxListState createState() => _BoxListState();
+// }
+
+// class _BoxListState extends State<BoxList> {
+//   DateTime? _startDate;
+//   DateTime? _endDate;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('News List'),
+//         actions: [
+//           IconButton(
+//             icon: Icon(Icons.calendar_today),
+//             onPressed: _showDateRangePicker,
+//           ),
+//         ],
+//       ),
+//       body: StreamBuilder<QuerySnapshot>(
+//         stream: FirebaseFirestore.instance.collection('newsData-2').snapshots(),
+//         builder: (context, snapshot) {
+//           if (snapshot.connectionState == ConnectionState.waiting) {
+//             return Center(
+//               child: CircularProgressIndicator(),
+//             );
+//           }
+
+//           if (snapshot.hasError) {
+//             return Center(
+//               child: Text('Error: ${snapshot.error}'),
+//             );
+//           }
+
+//           final newsDocs = snapshot.data?.docs;
+//           if (newsDocs == null || newsDocs.isEmpty) {
+//             return Center(
+//               child: Text('No data available.'),
+//             );
+//           }
+
+//           // Filter the news documents based on the selected date range
+//           List<QueryDocumentSnapshot> filteredNewsDocs =
+//               _filterNewsDocsByDate(newsDocs);
+
+//           return filteredNewsDocs.isNotEmpty
+//               ? ListView.builder(
+//                   itemCount: filteredNewsDocs.length,
+//                   itemBuilder: (BuildContext context, int index) {
+//                     final news =
+//                         filteredNewsDocs[index].data() as Map<String, dynamic>?;
+
+//                     final String? webpageLink = news?['webpage'] as String?;
+
+//                     return GestureDetector(
+//                       onTap: () {
+//                         if (webpageLink != null) {
+//                           Navigator.push(
+//                             context,
+//                             MaterialPageRoute(
+//                               builder: (context) =>
+//                                   InAppWebViewPage(webpageLink),
+//                             ),
+//                           );
+//                         }
+//                       },
+//                       child: Container(
+//                         padding: EdgeInsets.all(16),
+//                         child: Center(
+//                           child: Text('Title',
+//                               style: TextStyle(
+//                                   fontSize: 20,
+//                                   color: Colors.black,
+//                                   fontWeight: FontWeight.bold)),
+//                         ),
+//                       ),
+//                     );
+//                   },
+//                 )
+//               : Center(
+//                   child: Text('Select a proper date'),
+//                 );
+//         },
+//       ),
+//     );
+//   }
+
+//   List<QueryDocumentSnapshot> _filterNewsDocsByDate(
+//       List<QueryDocumentSnapshot>? newsDocs) {
+//     if (newsDocs == null || _startDate == null || _endDate == null) {
+//       return [];
+//     }
+
+//     // Filter the news documents based on the selected date range
+//     return newsDocs.where((doc) {
+//       var datestamp = doc['datestamp'];
+
+//       if (datestamp is String) {
+//         DateTime date = DateTime.parse(datestamp);
+//         return date.isAfter(_startDate!) &&
+//             date.isBefore(_endDate!.add(Duration(days: 1)));
+//       } else if (datestamp is Timestamp) {
+//         DateTime date = datestamp.toDate();
+//         return date.isAfter(_startDate!) &&
+//             date.isBefore(_endDate!.add(Duration(days: 1)));
+//       }
+
+//       return false;
+//     }).toList();
+//   }
+
+//   void _showDateRangePicker() {
+//     showCupertinoModalPopup<void>(
+//       context: context,
+//       builder: (BuildContext context) {
+//         return Container(
+//           height: 300.0,
+//           child: CupertinoDatePicker(
+//             mode: CupertinoDatePickerMode.date,
+//             initialDateTime:
+//                 _startDate ?? DateTime.now().subtract(Duration(days: 7)),
+//             minimumDate: DateTime(DateTime.now().year - 1),
+//             maximumDate: DateTime.now(),
+//             onDateTimeChanged: (DateTime newDate) {
+//               setState(() {
+//                 if (_startDate == null) {
+//                   _startDate = newDate;
+//                 } else if (_endDate == null || newDate.isAfter(_endDate!)) {
+//                   _endDate = newDate;
+//                 } else {
+//                   _startDate = newDate;
+//                 }
+//               });
+//             },
+//           ),
+//         );
+//       },
+//     );
+//   }
+// }
+
+// class InAppWebViewPage extends StatelessWidget {
+//   final String webpageLink;
+
+//   InAppWebViewPage(this.webpageLink);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         backgroundColor: Colors.white,
+//         title: Text(
+//           'Bit News',
+//           style: TextStyle(color: const Color.fromARGB(255, 73, 22, 3)),
+//         ),
+//         centerTitle: true,
+//       ),
+//       body: InAppWebView(
+//         initialUrlRequest: URLRequest(url: Uri.parse(webpageLink)),
+//       ),
+//     );
+//   }
+// }
+
+// // Function to convert date strings to Firestore Timestamps
+// Future<void> convertDatesToTimestamps() async {
+//   // Get a reference to the collection
+//   CollectionReference newsCollection =
+//       FirebaseFirestore.instance.collection('newsData-2');
+
+//   // Fetch the documents that contain the date fields in string format
+//   QuerySnapshot querySnapshot = await newsCollection.get();
+
+//   // Loop through each document and update the date fields to Timestamps
+//   for (DocumentSnapshot docSnapshot in querySnapshot.docs) {
+//     // Get the date field value as a string
+//     String dateString = docSnapshot.get('datestamp');
+
+//     // Parse the date string to a DateTime object
+//     DateTime date = DateTime.parse(dateString);
+
+//     // Convert the DateTime object to a Firestore Timestamp
+//     Timestamp timestamp = Timestamp.fromDate(date);
+
+//     // Update the document with the new Timestamp
+//     await docSnapshot.reference.update({'datestamp': timestamp});
+//   }
+// }
+
 class BoxList extends StatefulWidget {
   @override
   _BoxListState createState() => _BoxListState();
@@ -154,22 +345,18 @@ class _BoxListState extends State<BoxList> {
                           child: Text('Title',
                               style: TextStyle(
                                   fontSize: 20,
-                                  color: Colors.white,
+                                  color: Colors.black,
                                   fontWeight: FontWeight.bold)),
                         ),
                       ),
                     );
                   },
                 )
-              : _buildNoDataAvailableWidget();
+              : Center(
+                  child: Text('No data available for selected date range.'),
+                );
         },
       ),
-    );
-  }
-
-  Widget _buildNoDataAvailableWidget() {
-    return Center(
-      child: Text('No data available.'),
     );
   }
 
@@ -201,25 +388,62 @@ class _BoxListState extends State<BoxList> {
     showCupertinoModalPopup<void>(
       context: context,
       builder: (BuildContext context) {
+        DateTime startDate =
+            _startDate ?? DateTime.now().subtract(Duration(days: 7));
+        DateTime endDate = _endDate ?? DateTime.now();
+
         return Container(
           height: 300.0,
-          child: CupertinoDatePicker(
-            mode: CupertinoDatePickerMode.date,
-            initialDateTime:
-                _startDate ?? DateTime.now().subtract(Duration(days: 7)),
-            minimumDate: DateTime(DateTime.now().year - 1),
-            maximumDate: DateTime.now(),
-            onDateTimeChanged: (DateTime newDate) {
-              setState(() {
-                if (_startDate == null) {
-                  _startDate = newDate;
-                } else if (_endDate == null || newDate.isAfter(_endDate!)) {
-                  _endDate = newDate;
-                } else {
-                  _startDate = newDate;
-                }
-              });
-            },
+          child: Column(
+            children: [
+              Expanded(
+                child: CupertinoDatePicker(
+                  mode: CupertinoDatePickerMode.date,
+                  initialDateTime: startDate,
+                  minimumDate: DateTime(DateTime.now().year - 1),
+                  maximumDate: DateTime.now(),
+                  onDateTimeChanged: (DateTime newDate) {
+                    setState(() {
+                      startDate = newDate;
+                    });
+                  },
+                ),
+              ),
+              Expanded(
+                child: CupertinoDatePicker(
+                  mode: CupertinoDatePickerMode.date,
+                  initialDateTime: endDate,
+                  minimumDate: DateTime(DateTime.now().year - 1),
+                  maximumDate: DateTime.now(),
+                  onDateTimeChanged: (DateTime newDate) {
+                    setState(() {
+                      endDate = newDate;
+                    });
+                  },
+                ),
+              ),
+              CupertinoButton(
+                onPressed: () {
+                  Navigator.pop(context);
+
+                  // Check if start date is before end date
+                  if (startDate.isBefore(endDate) ||
+                      startDate.isAtSameMomentAs(endDate)) {
+                    setState(() {
+                      _startDate = startDate;
+                      _endDate = endDate;
+                    });
+                  } else {
+                    // Show a snackbar or dialog to indicate invalid date range
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text(
+                          'Invalid date range. Please select a proper date range.'),
+                    ));
+                  }
+                },
+                child: Text('Done'),
+              ),
+            ],
           ),
         );
       },
@@ -247,48 +471,5 @@ class InAppWebViewPage extends StatelessWidget {
         initialUrlRequest: URLRequest(url: Uri.parse(webpageLink)),
       ),
     );
-  }
-}
-
-// class InAppWebViewPage extends StatelessWidget {
-//   final String webpageLink;
-
-//   InAppWebViewPage(this.webpageLink);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Webpage'),
-//       ),
-//       body: InAppWebView(
-//         initialUrlRequest: URLRequest(url: Uri.parse(webpageLink)),
-//       ),
-//     );
-//   }
-// }
-
-// Function to convert date strings to Firestore Timestamps
-Future<void> convertDatesToTimestamps() async {
-  // Get a reference to the collection
-  CollectionReference newsCollection =
-      FirebaseFirestore.instance.collection('newsData-2');
-
-  // Fetch the documents that contain the date fields in string format
-  QuerySnapshot querySnapshot = await newsCollection.get();
-
-  // Loop through each document and update the date fields to Timestamps
-  for (DocumentSnapshot docSnapshot in querySnapshot.docs) {
-    // Get the date field value as a string
-    String dateString = docSnapshot.get('datestamp');
-
-    // Parse the date string to a DateTime object
-    DateTime date = DateTime.parse(dateString);
-
-    // Convert the DateTime object to a Firestore Timestamp
-    Timestamp timestamp = Timestamp.fromDate(date);
-
-    // Update the document with the new Timestamp
-    await docSnapshot.reference.update({'datestamp': timestamp});
   }
 }
