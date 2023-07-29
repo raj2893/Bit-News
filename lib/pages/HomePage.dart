@@ -1,6 +1,6 @@
 import 'package:bitnews/pages/Box.dart';
 import 'package:flutter/material.dart';
-import 'dart:ui';
+
 class HomePage extends StatelessWidget {
   String activePageTitle = "Home";
 
@@ -12,7 +12,6 @@ class HomePage extends StatelessWidget {
       ),
       body: BoxList(),
       bottomNavigationBar: BottomNavigationBar(
-        
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.set_meal),

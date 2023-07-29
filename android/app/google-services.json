@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "305530821720",
+    "project_id": "bit-news-6fef6",
+    "storage_bucket": "bit-news-6fef6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:305530821720:android:236b9ac55aa57aed047e2d",
+        "android_client_info": {
+          "package_name": "com.example.bitnews"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "305530821720-3n2c2a964prgeaklfv43ragokt3fp314.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bitnews",
+            "certificate_hash": "c2e9e7d7f54be2d87fe275aec63df4a37a67d1b7"
+          }
+        },
+        {
+          "client_id": "305530821720-83138hgffopcu9rao9t3utv43bfv2do1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvmrpaffPk8FT0XVVuWrb-qrE-Qfc3mV8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "305530821720-83138hgffopcu9rao9t3utv43bfv2do1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "305530821720-9s2so50dvkeua7f21su753u3o6ol9oqm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.bitnews"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

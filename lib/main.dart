@@ -1,7 +1,12 @@
+import 'package:bitnews/firebase_options.dart';
+import 'package:bitnews/pages/CategoryPage.dart';
 import 'package:bitnews/pages/LoginPage.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'dart:ui';
-void main() {
+
+late Size mq;
+void main() async {
   runApp(const MyApp());
 }
 
@@ -14,7 +19,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'BitNews',
-      home: Center(child: LoginForm()),
+      home: Center(child: SelectionOptionsPage()),
     );
   }
+}
+
+_initializeFirebase() async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 }
