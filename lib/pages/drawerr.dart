@@ -6,31 +6,73 @@ class Drawerr extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
+      child: Column(
+        children: [
           DrawerHeader(
+            padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-              color: Colors.white,
+              gradient: LinearGradient(
+                colors: [
+                  Theme.of(context).colorScheme.primaryContainer,
+                  Theme.of(context)
+                      .colorScheme
+                      .primaryContainer
+                      .withOpacity(0.8),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
             ),
-            child: Text(
-              'Drawer',
-              style: TextStyle(color: Colors.black, fontSize: 24),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.newspaper,
+                  size: 48,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                const SizedBox(width: 18),
+                Text(
+                  'BitNews!',
+                  style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                ),
+              ],
             ),
           ),
           ListTile(
-            title: Text('Sorting'),
-            onTap: () {
-              // Handle the option 1 tap
-              // You can navigate to a different screen or update the state here.
-            },
+            leading: Icon(
+              Icons.alarm,
+              size: 26,
+              color: Theme.of(context).colorScheme.onBackground,
+            ),
+            title: Text(
+              'Sorting',
+              style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                    color: Theme.of(context).colorScheme.onBackground,
+                    fontSize: 24,
+                  ),
+            ),
+            // onTap: () {
+            //   onSelectScreen('sorting');
+            // },
           ),
           ListTile(
-            title: Text('News'),
-            onTap: () {
-              // Handle the option 2 tap
-            },
+            leading: Icon(
+              Icons.settings,
+              size: 26,
+              color: Theme.of(context).colorScheme.onBackground,
+            ),
+            title: Text(
+              'Filters',
+              style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                    color: Theme.of(context).colorScheme.onBackground,
+                    fontSize: 24,
+                  ),
+            ),
+            // onTap: () {
+            //   onSelectScreen('filters');
+            // },
           ),
         ],
       ),
