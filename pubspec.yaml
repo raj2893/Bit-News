@@ -45,6 +45,9 @@ dependencies:
   flutter_html: ^2.2.1
   flutter_inappwebview: ^5.7.2+3
   cloud_firestore: ^4.8.4
+  flutter_date_range_picker: ^0.0.14
+  intl: ^0.18.1
+  flutter_cupertino_datetime_picker: ^3.0.0
 
 dev_dependencies:
   flutter_test:
