@@ -3,7 +3,7 @@ import 'package:bitnews/pages/drawerr.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
-  String activePageTitle = "Home";
+  String activePageTitle = "BitNews";
 
   @override
   Widget build(BuildContext context) {
