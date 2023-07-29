@@ -12,7 +12,7 @@ final theme = ThemeData(
   useMaterial3: true,
   colorScheme: ColorScheme.fromSeed(
     brightness: Brightness.dark,
-    seedColor: const Color.fromARGB(255, 131, 57, 0),
+    seedColor: Color.fromARGB(255, 201, 201, 201),
   ),
   textTheme: GoogleFonts.latoTextTheme(),
 );
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
       theme: theme,
       debugShowCheckedModeBanner: false,
       title: 'BitNews',
-      home: Center(child: LoginForm()),
+      home: Center(child: LoginScreen()),
     );
   }
 }

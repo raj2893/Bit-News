@@ -236,7 +236,12 @@ class InAppWebViewPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Webpage'),
+        backgroundColor: Colors.white,
+        title: Text(
+          'Bit News',
+          style: TextStyle(color: const Color.fromARGB(255, 73, 22, 3)),
+        ),
+        centerTitle: true,
       ),
       body: InAppWebView(
         initialUrlRequest: URLRequest(url: Uri.parse(webpageLink)),
