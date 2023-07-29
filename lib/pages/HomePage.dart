@@ -1,4 +1,5 @@
 import 'package:bitnews/pages/Box.dart';
+import 'package:bitnews/pages/drawerr.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -11,6 +12,7 @@ class HomePage extends StatelessWidget {
         title: Text(activePageTitle),
       ),
       body: BoxList(),
+      drawer: Drawerr(),
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(
