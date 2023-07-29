@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
       theme: theme,
       debugShowCheckedModeBanner: false,
       title: 'BitNews',
-      home: Center(child: LoginScreen()),
+      home: Center(child: LoginForm()),
     );
   }
 }
