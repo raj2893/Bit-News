@@ -71,6 +71,7 @@ class LoginForm extends StatelessWidget {
                 child: Text(
                   "Bit News",
                   style: GoogleFonts.kaushanScript(
+                    color: Colors.white,
                       fontSize: 40, fontWeight: FontWeight.w900),
                 ),
               ),
