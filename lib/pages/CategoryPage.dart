@@ -1,3 +1,4 @@
+import 'package:bitnews/pages/HomePage.dart';
 import 'package:flutter/material.dart';
 
 class SelectionOptionsPage extends StatefulWidget {
@@ -52,9 +53,12 @@ class _SelectionOptionsPageState extends State<SelectionOptionsPage> {
             child: ElevatedButton(
               onPressed: () {
                 // Implementing the logic to handle the selected options here
-                List<Option> selectedOptions =
-                    options.where((option) => option.isSelected).toList();
-                print('Selected Options: $selectedOptions');
+                // List<Option> selectedOptions =
+                //     options.where((option) => option.isSelected).toList();
+                // print('Selected Options: $selectedOptions');
+
+                Navigator.pushReplacement(
+                    context, MaterialPageRoute(builder: (_) => HomePage()));
               },
               child: Text('Done'),
             ),
