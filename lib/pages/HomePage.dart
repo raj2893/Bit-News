@@ -1,3 +1,4 @@
+import 'package:bitnews/pages/Box.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui';
 class HomePage extends StatelessWidget {
@@ -9,18 +10,7 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text(activePageTitle),
       ),
-      body: GridView.count(
-          crossAxisCount: 1,
-          // Generate 100 widgets that display their index in the List.
-          children: List.generate(100, (index) {
-            return Center(
-              child: Text(
-                'Item $index',
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-            );
-          }),
-        ),
+      body: BoxList(),
       bottomNavigationBar: BottomNavigationBar(
         
         items: const [
