@@ -2,8 +2,6 @@ import 'package:bitnews/pages/HomePage.dart';
 import 'package:flutter/material.dart';
 
 class LoginForm extends StatelessWidget {
-  LoginForm({super.key});
-
   final _formKey = GlobalKey<FormState>();
   final _passKey = GlobalKey<FormState>();
 

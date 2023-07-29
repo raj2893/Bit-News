@@ -13,7 +13,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      home: LoginForm(),
+      home: Scaffold(
+        body: Center(child: LoginForm()),
+      ),
     );
   }
 }
