@@ -2,15 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: PinCodeScreen(),
-    );
-  }
-}
-
 class PinCodeScreen extends StatefulWidget {
   @override
   _PinCodeScreenState createState() => _PinCodeScreenState();
