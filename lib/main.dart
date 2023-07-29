@@ -6,7 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'dart:ui';
 
 late Size mq;
-void main() async {
+void main() {
   runApp(const MyApp());
 }
 
@@ -19,11 +19,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'BitNews',
-      home: Center(child: SelectionOptionsPage()),
+      home: Center(child: LoginForm()),
     );
   }
 }
 
-_initializeFirebase() async {
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-}
+// _initializeFirebase() async {
+//   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+// }
