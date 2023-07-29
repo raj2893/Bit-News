@@ -12,19 +12,19 @@ class HomePage extends StatelessWidget {
         title: Text(activePageTitle),
       ),
       body: BoxList(),
-      drawer: Drawerr(),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.set_meal),
-            label: 'Categories',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.star),
-            label: 'Favorites',
-          ),
-        ],
-      ),
+      // drawer: Drawerr(),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   items: const [
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.set_meal),
+      //       label: 'Categories',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.star),
+      //       label: 'Favorites',
+      //     ),
+      //   ],
+      // ),
     );
   }
 }

@@ -11,7 +11,7 @@ late Size mq;
 final theme = ThemeData(
   useMaterial3: true,
   colorScheme: ColorScheme.fromSeed(
-    brightness: Brightness.dark,
+    // brightness: Brightness.dark,
     seedColor: Color.fromARGB(255, 201, 201, 201),
   ),
   textTheme: GoogleFonts.latoTextTheme(),
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
       theme: theme,
       debugShowCheckedModeBanner: false,
       title: 'BitNews',
-      home: Center(child: LoginForm()),
+      home: Center(child: LoginScreen()),
     );
   }
 }

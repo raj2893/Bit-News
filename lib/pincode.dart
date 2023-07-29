@@ -1,6 +1,9 @@
 import 'dart:io';
 
+import 'package:bitnews/pages/HomePage.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PinCodeScreen extends StatefulWidget {
   @override
@@ -46,13 +49,31 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
               ),
               SizedBox(height: 16.0),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   // Implement your logic here to handle the entered PIN code.
                   if (pinCode.length == 6) {
                     print('You entered the PIN code: $pinCode');
+
+                    // Get the current user's UID
+                    final User? user = FirebaseAuth.instance.currentUser;
+                    if (user != null) {
+                      // Store the PIN code in Firestore
+                      try {
+                        await FirebaseFirestore.instance
+                            .collection('users')
+                            .doc(user.uid)
+                            .set({'pincode': pinCode});
+                        print('PIN code successfully stored in Firestore!');
+                      } catch (e) {
+                        print('Error storing PIN code: $e');
+                      }
+                    }
                   } else {
-                    print('Invalid input! Please enter a valid 6-digit PIN code.');
+                    print(
+                        'Invalid input! Please enter a valid 6-digit PIN code.');
                   }
+                  Navigator.pushReplacement(
+                      context, MaterialPageRoute(builder: (_) => HomePage()));
                 },
                 child: Text('Submit'),
               ),
