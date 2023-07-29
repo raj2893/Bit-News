@@ -1,10 +1,10 @@
-import 'package:bitnews/firebase_options.dart';
-import 'package:bitnews/pages/CategoryPage.dart';
 import 'package:bitnews/pages/LoginPage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'dart:ui';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'firebase_options.dart';
+// import 'dart:ui';
 
 late Size mq;
 
@@ -16,7 +16,9 @@ final theme = ThemeData(
   ),
   textTheme: GoogleFonts.latoTextTheme(),
 );
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  _initializeFirebase();
   runApp(const MyApp());
 }
 
@@ -35,6 +37,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// _initializeFirebase() async {
-//   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-// }
+_initializeFirebase() async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+}
