@@ -1,22 +1,39 @@
+import 'dart:io';
+import 'package:bitnews/helper/dialogs.dart';
+import 'package:bitnews/main.dart';
 import 'package:bitnews/pages/HomePage.dart';
 import 'package:bitnews/pages/LoginPage.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:bitnews/pages/auth_service.dart';
+import 'package:bitnews/pincode.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'auth_service.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-class SignupScreen extends StatelessWidget {
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({Key? key}) : super(key: key);
+
+  @override
+  _SignupScreenState createState() => _SignupScreenState();
+}
+
+class _SignupScreenState extends State<SignupScreen> {
   final AuthService _authService = AuthService();
-
+  bool _isAnimate = false;
   final TextEditingController _emailController = TextEditingController();
-
   final TextEditingController _passwordController = TextEditingController();
 
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(milliseconds: 1000), () {
+      setState(() {
+        _isAnimate = true;
+      });
+    });
+  }
 
-  void _signup(BuildContext context) async {
+  Future<void> _signUpWithEmailAndPassword() async {
     String email = _emailController.text.trim();
     String password = _passwordController.text.trim();
 
@@ -27,7 +44,7 @@ class SignupScreen extends StatelessWidget {
         // Signup successful, navigate to home screen
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => HomePage()),
+          MaterialPageRoute(builder: (context) => PinCodeScreen()),
         );
       } else {
         // Signup failed
@@ -50,171 +67,187 @@ class SignupScreen extends StatelessWidget {
     }
   }
 
-  void _signUpWithGoogle(BuildContext context) async {
-    try {
-      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+  _handleGoogleButtonClick() {
+    Dialogs.showProgressBar(context);
 
-      if (googleUser != null) {
-        await _googleSignIn.signOut();
-
-        final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-
-        if (googleUser != null) {
-          final GoogleSignInAuthentication googleAuth =
-              await googleUser!.authentication;
-
-          final AuthCredential credential = GoogleAuthProvider.credential(
-            accessToken: googleAuth.accessToken,
-            idToken: googleAuth.idToken,
-          );
-
-          final UserCredential userCredential =
-              await _firebaseAuth.signInWithCredential(credential);
-          final User? user = userCredential.user;
-
-          if (user != null) {
-            // Sign-up successful, navigate to home screen
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => HomePage()),
-            );
-          }
-        }
-      }
-    } catch (e) {
-      // Sign-up failed
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Sign-up Failed'),
-            content: Text('An error occurred while signing up with Google.'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text('OK'),
-              ),
-            ],
-          );
-        },
+    _signInWithGoogle().then((user) {
+      Navigator.pop(context);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => PinCodeScreen(),
+        ),
       );
+    });
+  }
+
+  Future<UserCredential?> _signInWithGoogle() async {
+    try {
+      await InternetAddress.lookup('google.com');
+      // Trigger the authentication flow
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+      // Obtain the auth details from the request
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
+
+      // Create a new credential
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+
+      // Once signed in, return the UserCredential
+      return await FirebaseAuth.instance.signInWithCredential(credential);
+    } catch (e) {
+      Dialogs.showSnackbar(context, 'Something Went Wrong (Check Internet!)');
+      return null;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Container(
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          // appBar: AppBar(
-          //   elevation: 0.5,
-          //   title: Text(
-          //     'Signup',
-          //     style: TextStyle(color: Colors.black),
-          //   ),
-          //   backgroundColor: Colors.white,
-          // ),
-          body: Center(
-            child: SingleChildScrollView(
-              child: Container(
-                padding: EdgeInsets.all(20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Task Tracker",
-                      style: GoogleFonts.kaushanScript(
-                          fontSize: 45, fontWeight: FontWeight.w900),
+    mq = MediaQuery.of(context).size;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Welcome to Bit News'),
+        centerTitle: true,
+      ),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                height: mq.height * 0.15,
+                child: Image.asset('assets/news.png'),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                width: mq.width * .9,
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: TextField(
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                      hintText: 'Email',
                     ),
-                    SizedBox(height: 20.0),
-                    FractionallySizedBox(
-                      widthFactor: 0.85,
-                      child: TextField(
-                        controller: _emailController,
-                        decoration: InputDecoration(
-                          hintText: 'Email',
-                          hintStyle: TextStyle(
-                              color: Color.fromARGB(255, 161, 161, 161)),
-                          fillColor: Colors.white,
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
-                              borderSide: BorderSide.none),
-                        ),
-                      ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Container(
+                width: mq.width * .9,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: TextField(
+                    controller: _passwordController,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      hintText: 'Password',
                     ),
-                    SizedBox(height: 10.0),
-                    FractionallySizedBox(
-                      widthFactor: 0.85,
-                      child: TextField(
-                        controller: _passwordController,
-                        decoration: InputDecoration(
-                          hintText: 'Password',
-                          hintStyle: TextStyle(
-                              color: Color.fromARGB(255, 161, 161, 161)),
-                          fillColor: Colors.white,
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),
-                              borderSide: BorderSide.none),
-                        ),
-                        obscureText: true,
-                      ),
-                    ),
-                    SizedBox(height: 16.0),
-                    FractionallySizedBox(
-                      widthFactor: 0.85,
-                      child: ElevatedButton(
-                        onPressed: () => _signup(context),
-                        child: Text('SignUp'),
-                        style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20)),
-                            backgroundColor: Colors.black,
-                            padding: EdgeInsets.symmetric(vertical: 15)),
-                      ),
-                    ),
-                    SizedBox(height: 5.0),
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                      Text("Already have an account?"),
-                      TextButton(
+                  ),
+                ),
+              ),
+              Container(
+                width: mq.width * .85,
+                height: mq.height * 0.1,
+                child: Padding(
+                  padding: EdgeInsets.all(10),
+                  child: ElevatedButton(
+                    onPressed: _signUpWithEmailAndPassword,
+                    child: Text('Sign Up'),
+                  ),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Already a User? '),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => SignupScreen(),
+                          ),
+                        );
+                      },
+                      child: TextButton(
+                        child: Text('Login'),
                         onPressed: () {
-                          Navigator.push(
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => LoginScreen()),
+                              builder: (_) => LoginScreen(),
+                            ),
                           );
                         },
-                        // Call _signup method when pressed
-                        child: Text('Login'),
+                      ))
+                ],
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: mq.width * 0.3,
+                      height: 1,
+                      color: Colors.black,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Text(
+                        'OR',
+                        style: TextStyle(fontSize: 16),
                       ),
-                    ]),
-                    SizedBox(height: 25.0),
-                    Text('OR'),
-                    SizedBox(height: 25.0),
-                    FractionallySizedBox(
-                      widthFactor: 0.85,
-                      child: ElevatedButton(
-                        onPressed: () => _signUpWithGoogle(context),
-                        child: Text(
-                          'Sign up with Google',
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          padding: EdgeInsets.symmetric(vertical: 15),
-                          backgroundColor: Colors.white,
-                        ),
-                      ),
+                    ),
+                    Container(
+                      width: mq.width * 0.3,
+                      height: 1,
+                      color: Colors.black,
                     ),
                   ],
                 ),
               ),
-            ),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                width: mq.width * .85,
+                height: mq.height * 0.07,
+                child: ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 0, 37, 67),
+                        shape: const StadiumBorder(),
+                        elevation: 1),
+                    onPressed: () {
+                      _handleGoogleButtonClick();
+                    },
+                    icon: Image.asset(
+                      'assets/google.png',
+                      height: mq.height * 0.05,
+                    ),
+                    label: RichText(
+                      text: const TextSpan(
+                          style: TextStyle(color: Colors.white, fontSize: 17),
+                          children: [
+                            TextSpan(text: 'Login with '),
+                            TextSpan(
+                                text: 'Google',
+                                style: TextStyle(fontWeight: FontWeight.w900)),
+                          ]),
+                    )),
+              )
+            ],
           ),
         ),
       ),

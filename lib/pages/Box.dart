@@ -1,8 +1,16 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'shaded_box.dart';
+import 'category.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'data_trait.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_date_range_picker/flutter_date_range_picker.dart'
+    as DateRangePicker;
+import 'package:intl/intl.dart';
+import 'package:flutter_cupertino_datetime_picker/flutter_cupertino_datetime_picker.dart';
 
 class BoxList extends StatefulWidget {
   @override
@@ -12,7 +20,6 @@ class BoxList extends StatefulWidget {
 class _BoxListState extends State<BoxList> {
   DateTime? _startDate;
   DateTime? _endDate;
-  String userPinCode = '';
 
   @override
   Widget build(BuildContext context) {
@@ -48,8 +55,9 @@ class _BoxListState extends State<BoxList> {
             );
           }
 
+          // Filter the news documents based on the selected date range
           List<QueryDocumentSnapshot> filteredNewsDocs =
-              _filterNewsDocsByDateAndPincode(newsDocs);
+              _filterNewsDocsByDate(newsDocs);
 
           return filteredNewsDocs.isNotEmpty
               ? ListView.builder(
@@ -59,6 +67,10 @@ class _BoxListState extends State<BoxList> {
                         filteredNewsDocs[index].data() as Map<String, dynamic>?;
 
                     final String? webpageLink = news?['webpage'] as String?;
+                    final String? datestamp = news?['datestamp'] as String?;
+                    DateTime date = DateTime.parse(datestamp!);
+                    String formattedDate =
+                        DateFormat('yyyy-MM-dd').format(date);
 
                     return GestureDetector(
                       onTap: () {
@@ -75,52 +87,42 @@ class _BoxListState extends State<BoxList> {
                       child: Container(
                         padding: EdgeInsets.all(16),
                         child: Center(
-                          child: Text(
-                            news?['title'] ?? 'Title',
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          child: Text(formattedDate,
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold)),
                         ),
                       ),
                     );
                   },
                 )
               : Center(
-                  child: Text(
-                      'No data available for selected date range and pincode.'),
+                  child: Text('No data available for selected date range.'),
                 );
         },
       ),
     );
   }
 
-  List<QueryDocumentSnapshot> _filterNewsDocsByDateAndPincode(
+  List<QueryDocumentSnapshot> _filterNewsDocsByDate(
       List<QueryDocumentSnapshot>? newsDocs) {
-    if (newsDocs == null ||
-        _startDate == null ||
-        _endDate == null ||
-        userPinCode.isEmpty) {
+    if (newsDocs == null || _startDate == null || _endDate == null) {
       return [];
     }
 
+    // Filter the news documents based on the selected date range
     return newsDocs.where((doc) {
       var datestamp = doc['datestamp'];
 
       if (datestamp is String) {
         DateTime date = DateTime.parse(datestamp);
         return date.isAfter(_startDate!) &&
-            date.isBefore(_endDate!.add(Duration(days: 1))) &&
-            doc['pincode'] != null &&
-            doc['pincode'].startsWith(userPinCode);
+            date.isBefore(_endDate!.add(Duration(days: 1)));
       } else if (datestamp is Timestamp) {
         DateTime date = datestamp.toDate();
         return date.isAfter(_startDate!) &&
-            date.isBefore(_endDate!.add(Duration(days: 1))) &&
-            doc['pincode'] != null &&
-            doc['pincode'].startsWith(userPinCode);
+            date.isBefore(_endDate!.add(Duration(days: 1)));
       }
 
       return false;
@@ -173,6 +175,7 @@ class _BoxListState extends State<BoxList> {
                 onPressed: () {
                   Navigator.pop(context);
 
+                  // Check if start date is before end date
                   if (startDate.isBefore(endDate) ||
                       startDate.isAtSameMomentAs(endDate)) {
                     setState(() {
@@ -180,6 +183,7 @@ class _BoxListState extends State<BoxList> {
                       _endDate = endDate;
                     });
                   } else {
+                    // Show a snackbar or dialog to indicate invalid date range
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       content: Text(
                           'Invalid date range. Please select a proper date range.'),
