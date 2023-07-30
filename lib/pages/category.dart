@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class Category {
   const Category({
     required this.id,
@@ -8,5 +6,4 @@ class Category {
 
   final String id;
   final String title;
-
 }

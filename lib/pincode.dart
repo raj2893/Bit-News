@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:bitnews/pages/HomePage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -50,14 +48,11 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
               SizedBox(height: 16.0),
               ElevatedButton(
                 onPressed: () async {
-                  // Implement your logic here to handle the entered PIN code.
                   if (pinCode.length == 6) {
                     print('You entered the PIN code: $pinCode');
 
-                    // Get the current user's UID
                     final User? user = FirebaseAuth.instance.currentUser;
                     if (user != null) {
-                      // Store the PIN code in Firestore
                       try {
                         await FirebaseFirestore.instance
                             .collection('users')
@@ -74,6 +69,17 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
                   }
                   Navigator.pushReplacement(
                       context, MaterialPageRoute(builder: (_) => HomePage()));
+
+                  String firstFourCharacters = pinCode.substring(0, 4);
+
+                  QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+                      .collection('newsData-2')
+                      .where('pincode',
+                          isGreaterThanOrEqualTo: firstFourCharacters)
+                      .where('pincode', isLessThan: firstFourCharacters + 'z')
+                      .get();
+
+                  List<DocumentSnapshot> newsDocuments = querySnapshot.docs;
                 },
                 child: Text('Submit'),
               ),

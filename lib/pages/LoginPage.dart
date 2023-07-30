@@ -1,16 +1,11 @@
 import 'dart:io';
-
 import 'package:bitnews/helper/dialogs.dart';
 import 'package:bitnews/main.dart';
-import 'package:bitnews/pages/HomePage.dart';
-import 'package:bitnews/pages/category.dart';
 import 'package:bitnews/pincode.dart';
 import 'package:flutter/material.dart';
-import 'package:bitnews/pages/CategoryPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -21,6 +16,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool _isAnimate = false;
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   void initState() {
@@ -122,7 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ]),
 
-      //Floating Action Button
+// Floating Action Button
     );
   }
 }
