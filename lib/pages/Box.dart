@@ -1,3 +1,4 @@
+import 'package:bitnews/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,7 @@ class _BoxListState extends State<BoxList> {
 
   @override
   Widget build(BuildContext context) {
+    mq = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: Text('News List'),
@@ -66,6 +68,8 @@ class _BoxListState extends State<BoxList> {
                     final news =
                         filteredNewsDocs[index].data() as Map<String, dynamic>?;
 
+                    final String? pincode = news?['pincode'] as String?;
+
                     final String? webpageLink = news?['webpage'] as String?;
                     final String? datestamp = news?['datestamp'] as String?;
                     DateTime date = DateTime.parse(datestamp!);
@@ -84,15 +88,70 @@ class _BoxListState extends State<BoxList> {
                           );
                         }
                       },
-                      child: Container(
-                        padding: EdgeInsets.all(16),
-                        child: Center(
-                          child: Text(formattedDate,
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold)),
-                        ),
+                      child: Column(
+                        children: [
+                          // Background image
+                          Container(
+                            width: double.infinity,
+                            height: mq.height * 0.03,
+                            padding: EdgeInsets.all(10),
+                            child: Image.asset(
+                              'assets/news.png',
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          // Content on top of the image
+                          Positioned(
+                            left: 16,
+                            right: 16,
+                            bottom: 16,
+                            child: Container(
+                              padding: EdgeInsets.all(16),
+                              color: Colors.black.withOpacity(0.7),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'News',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(height: 8),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.calendar_today,
+                                        color: Colors.white,
+                                      ),
+                                      SizedBox(width: 8),
+                                      Text(
+                                        formattedDate,
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(height: 8),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.location_on,
+                                        color: Colors.white,
+                                      ),
+                                      SizedBox(width: 8),
+                                      Text(
+                                        'Location: ${pincode ?? 'Not Found'}',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     );
                   },
