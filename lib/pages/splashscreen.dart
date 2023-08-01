@@ -1,8 +1,6 @@
-import 'package:bitnews/pages/HomePage.dart';
 import 'package:bitnews/pages/LoginPage.dart';
 import 'package:bitnews/pincode.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

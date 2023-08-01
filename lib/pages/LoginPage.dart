@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:bitnews/helper/dialogs.dart';
+import 'package:bitnews/widgets/dialogs.dart';
 import 'package:bitnews/main.dart';
 import 'package:bitnews/pages/signupPage.dart';
 import 'package:bitnews/pincode.dart';
@@ -33,15 +33,15 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> _signInWithEmailAndPassword() async {
     try {
       Dialogs.showProgressBar(context);
-      final String email = _emailController.text.trim();
-      final String password = _passwordController.text;
+      // final String email = _emailController.text.trim();
+      // final String password = _passwordController.text;
 
       // Use FirebaseAuth to sign in with email and password
-      final UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+      // final UserCredential userCredential =
+      //     await FirebaseAuth.instance.signInWithEmailAndPassword(
+      //   email: email,
+      //   password: password,
+      // );
 
       Navigator.pop(context);
       Navigator.pushReplacement(

@@ -1,9 +1,8 @@
 import 'dart:io';
-import 'package:bitnews/helper/dialogs.dart';
+import 'package:bitnews/widgets/dialogs.dart';
 import 'package:bitnews/main.dart';
-import 'package:bitnews/pages/HomePage.dart';
 import 'package:bitnews/pages/LoginPage.dart';
-import 'package:bitnews/pages/auth_service.dart';
+import 'package:bitnews/auth_service.dart';
 import 'package:bitnews/pincode.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';

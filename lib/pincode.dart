@@ -70,16 +70,16 @@ class _PinCodeScreenState extends State<PinCodeScreen> {
                   Navigator.pushReplacement(
                       context, MaterialPageRoute(builder: (_) => HomePage()));
 
-                  String firstFourCharacters = pinCode.substring(0, 4);
+                  // String firstFourCharacters = pinCode.substring(0, 4);
 
-                  QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-                      .collection('newsData-2')
-                      .where('pincode',
-                          isGreaterThanOrEqualTo: firstFourCharacters)
-                      .where('pincode', isLessThan: firstFourCharacters + 'z')
-                      .get();
+                  // QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+                  //     .collection('newsData-2')
+                  //     .where('pincode',
+                  //         isGreaterThanOrEqualTo: firstFourCharacters)
+                  //     .where('pincode', isLessThan: firstFourCharacters + 'z')
+                  //     .get();
 
-                  List<DocumentSnapshot> newsDocuments = querySnapshot.docs;
+                  // List<DocumentSnapshot> newsDocuments = querySnapshot.docs;
                 },
                 child: Text('Submit'),
               ),

@@ -1,9 +1,17 @@
-import 'package:bitnews/pages/Box.dart';
+import 'package:bitnews/helper/data.dart';
+import 'package:bitnews/model/category.dart';
+import 'package:bitnews/widgets/Box.dart';
 import 'package:bitnews/pages/LoginPage.dart';
+import 'package:bitnews/widgets/category_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   String activePageTitle = "BitNews";
 
   Future<void> _signOut(BuildContext context) async {
@@ -29,6 +37,14 @@ class HomePage extends StatelessWidget {
     }
   }
 
+  List<CategoryModel>? categories;
+
+  @override
+  void initState() {
+    super.initState();
+    categories = getCategories();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,7 +57,25 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      body: BoxList(),
+      body: Container(
+        child: Column(
+          children: [
+            Container(
+              height: MediaQuery.of(context).size.height * 0.15,
+              child: ListView.builder(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: categories!.length,
+                  itemBuilder: (context, index) {
+                    return CategoryTile(
+                        imageUrl: categories?[index].imageUrl,
+                        CategoryName: categories?[index].categoryName);
+                  }),
+            ),
+            Expanded(child: BoxList()),
+          ],
+        ),
+      ),
     );
   }
 }

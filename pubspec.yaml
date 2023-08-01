@@ -42,7 +42,6 @@ dependencies:
   http: ^1.1.0
   google_sign_in: ^6.1.4
   firebase_auth: ^4.7.2
-  
   flutter_inappwebview: ^5.7.2+3
   cloud_firestore: ^4.8.4
   flutter_date_range_picker: ^0.0.14
@@ -65,9 +64,9 @@ dev_dependencies:
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 flutter_launcher_icons:
-  android: "launcher_icon"
+  android: "ic_launcher"
   ios: true
-  image_path: "assets/news.png"
+  image_path: "assets/newsfinal.png"
   min_sdk_android: 21
   remove_alpha_ios: true
 # The following section is specific to Flutter packages.

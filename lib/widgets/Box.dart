@@ -1,17 +1,9 @@
 import 'package:bitnews/main.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'shaded_box.dart';
-import 'category.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'data_trait.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_date_range_picker/flutter_date_range_picker.dart'
-    as DateRangePicker;
 import 'package:intl/intl.dart';
-import 'package:flutter_cupertino_datetime_picker/flutter_cupertino_datetime_picker.dart';
 
 class BoxList extends StatefulWidget {
   @override
