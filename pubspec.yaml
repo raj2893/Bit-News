@@ -47,6 +47,8 @@ dependencies:
   flutter_date_range_picker: ^0.0.14
   intl: ^0.18.1
   flutter_cupertino_datetime_picker: ^3.0.0
+  cached_network_image: ^3.2.3
+  webview_flutter: ^4.2.2
   
 
 dev_dependencies:

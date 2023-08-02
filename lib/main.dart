@@ -1,4 +1,5 @@
 import 'package:bitnews/auth_service.dart';
+import 'package:bitnews/pages/HomePage.dart';
 import 'package:bitnews/pages/LoginPage.dart';
 import 'package:bitnews/pincode.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
         builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             User? user = snapshot.data;
+            bool isNewUser = user == null;
             if (user == null) {
               return MaterialApp(
                 theme: theme,
@@ -43,12 +45,20 @@ class MyApp extends StatelessWidget {
                 title: 'Bit News',
                 home: Center(child: LoginScreen()),
               );
-            } else {
+            }
+            if (isNewUser) {
               return MaterialApp(
                 debugShowCheckedModeBanner: false,
                 title: 'Bit News',
                 theme: theme,
                 home: PinCodeScreen(),
+              );
+            } else {
+              return MaterialApp(
+                debugShowCheckedModeBanner: false,
+                title: 'Bit News',
+                theme: theme,
+                home: HomePage(),
               );
             }
           } else {

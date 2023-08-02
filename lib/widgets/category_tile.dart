@@ -1,3 +1,6 @@
+import 'package:bitnews/helper/news.dart';
+import 'package:bitnews/widgets/category_list.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class CategoryTile extends StatelessWidget {
@@ -8,15 +11,21 @@ class CategoryTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (_) =>
+                    category_news(category: CategoryName.toLowerCase())));
+      },
       child: Container(
           margin: EdgeInsets.only(right: 16),
           child: Stack(
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(6),
-                child: Image.network(
-                  imageUrl,
+                child: CachedNetworkImage(
+                  imageUrl: imageUrl,
                   width: 120,
                   height: 60,
                   fit: BoxFit.cover,

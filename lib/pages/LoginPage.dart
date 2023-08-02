@@ -130,7 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(children: [
             Container(
               height: mq.height * 0.15,
-              child: Image.asset('assets/news.png'),
+              child: Image.asset('assets/newsFinal.png'),
             ),
             SizedBox(
               height: 10,
